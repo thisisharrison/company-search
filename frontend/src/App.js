@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios';
 import './App.css';
+import * as API from './util/company_api_util';
 
 function App() {
   const [companies, setCompanies] = useState([]);
   const [errors, setErrors] = useState([]);
   
   useEffect(() => {
-    axios.get('/api/companies').then((res) => {
+    API.fetchAllCompanies().then((res) => {
       setCompanies(res.data)
     })
     .catch(err => setErrors(err))

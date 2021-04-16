@@ -16,7 +16,7 @@ export const SearchContainer = (props) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <InputGroup className="mb-3 mt-5">
+      <InputGroup className="mb-5 mt-5">
         <FormControl
           type="text"
           placeholder="Company Name"

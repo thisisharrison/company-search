@@ -6,7 +6,7 @@ import { selectAllCompanies } from "./../../reducers/selectors";
 
 export const CompanyIndex = ({ companies }) => {
   return (
-    <Jumbotron>
+    <Jumbotron className="min-vh-100">
       <Row>
         {companies.map((company) => {
           return (

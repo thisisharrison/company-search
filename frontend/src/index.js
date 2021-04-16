@@ -1,13 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import axios from 'axios';
+import React from "react";
+import ReactDOM from "react-dom";
+import axios from "axios";
+import Root from "./components/root";
+import configureStore from "./store/store";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+document.addEventListener("DOMContentLoaded", () => {
+  let store;
+  if (localStorage.jwtToken) {
+    // to-do
+  } else {
+    store = configureStore({});
+  }
 
-window.axios = axios;
+  const root = document.getElementById("root");
+
+  ReactDOM.render(
+    <React.StrictMode>
+      <Root store={store} />
+    </React.StrictMode>,
+    root
+  );
+
+  // api debugging
+  window.axios = axios;
+});

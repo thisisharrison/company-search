@@ -21,24 +21,23 @@ const CompanyIndexItem = ({ company }) => {
         <Card.Subtitle className="mb-2">
           <a href={`${company.website}`}>{company.website}</a>
         </Card.Subtitle>
-        <Card.Text>
-          <ul>
-            <li>
-              <strong>Address:</strong> {company.address}
-            </li>
-            <li>
-              <strong>Employee Size:</strong> {company.employee_size}
-            </li>
-            <li>
-              <strong>Email:</strong> {company.email}
-            </li>
-            <li>
-              <strong>Phone:</strong> {company.phone_number}
-            </li>
-          </ul>
-          {/* debugging */}
-          {/* {JSON.stringify(company)} */}
-        </Card.Text>
+
+        <ul>
+          <li>
+            <strong>Address:</strong> {company.address}
+          </li>
+          <li>
+            <strong>Employee Size:</strong> {company.employee_size}
+          </li>
+          <li>
+            <strong>Email:</strong> {company.email}
+          </li>
+          <li>
+            <strong>Phone:</strong> {company.phone_number}
+          </li>
+        </ul>
+        {/* debugging */}
+        {/* {JSON.stringify(company)} */}
       </Card.Body>
     </Card>
   );

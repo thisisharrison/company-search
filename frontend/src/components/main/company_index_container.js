@@ -10,11 +10,8 @@ export const CompanyIndex = ({ companies }) => {
       <Row>
         {companies.map((company) => {
           return (
-            <Col md="12" lg="6" className="mb-4">
-              <CompanyIndexItem
-                key={`company-${company.id}`}
-                company={company}
-              />
+            <Col key={`company-${company.id}`} md="12" lg="6" className="mb-4">
+              <CompanyIndexItem company={company} />
             </Col>
           );
         })}

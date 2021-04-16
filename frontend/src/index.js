@@ -26,4 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // api debugging
   window.axios = axios;
+  window.store = store;
+  window.getState = store.getState();
 });

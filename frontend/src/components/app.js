@@ -18,13 +18,13 @@ const App = () => (
       <Route exact path="/companies" component={MainPage} />
       <AuthRoute exact path="/account/login" component={Login} />
       <AuthRoute exact path="/account/signup" component={SignUp} />
-      <Route exact path="/reset-password" component={ResetPassword} />
-      <Route
+      <AuthRoute exact path="/reset-password" component={ResetPassword} />
+      <AuthRoute
         exact
         path="/password/reset/confirm/:uid/:token"
         component={ResetPasswordConfirm}
       />
-      <Route exact path="/activate/:uid/:token" component={Activate} />
+      <AuthRoute exact path="/activate/:uid/:token" component={Activate} />
     </Switch>
   </div>
 );

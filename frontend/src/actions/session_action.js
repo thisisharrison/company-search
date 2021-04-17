@@ -68,7 +68,6 @@ export const loginUser = (data) => (dispatch) =>
       localStorage.setItem("jwtToken", data.access);
       API.setAuthToken(data.access);
       const decoded = jwt_decode(data.access);
-      console.log(decoded);
       delete decoded["jti"];
       delete decoded["token_type"];
       dispatch(receiveCurrentUser(decoded));

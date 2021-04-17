@@ -26,7 +26,6 @@ const SessionForm = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     let formCopy = Object.assign({}, formData);
-    console.log(formCopy);
     if (formType === "set_new_password") {
       formCopy.uid = uid;
       formCopy.token = token;

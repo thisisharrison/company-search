@@ -21,8 +21,8 @@ from accounts.views import MyTokenObtainPairSerializer, MyTokenObtainPairView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
+    # replaced with custom jwt token
     # path('auth/', include('djoser.urls.jwt')),
-    # to do
     path('auth/jwt/create/', MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path('auth/jwt/refresh/', MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path('', include('companies.urls'))

@@ -2,7 +2,10 @@ import React from "react";
 import { Col, Jumbotron, Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import CompanyIndexItem from "./company_index_item";
-import { selectAllCompanies } from "./../../reducers/selectors";
+import {
+  selectAllCompanies,
+  selectUserFavorite,
+} from "./../../reducers/selectors";
 import { postFavorite, removeFavorite } from "../../actions/favorite_action";
 
 export const CompanyIndex = ({
@@ -32,10 +35,18 @@ export const CompanyIndex = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  companies: selectAllCompanies(state.entities),
-  favorites: state.user.favorites,
-});
+const mapStateToProps = (state) => {
+  let companies = selectAllCompanies(state.entities);
+  const favorites = state.user.favorites;
+  const filterFavorites = state.search.favoriteFilter;
+  if (filterFavorites) {
+    companies = selectUserFavorite(state);
+  }
+  return {
+    companies,
+    favorites,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   postFavorite: (id) => dispatch(postFavorite(id)),

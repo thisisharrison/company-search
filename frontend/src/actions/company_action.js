@@ -8,6 +8,11 @@ export const receiveAllCompanies = (companies) => ({
 });
 
 export const fetchCompanies = () => (dispatch) =>
-  API.fetchAllCompanies().then((res) => {
-    dispatch(receiveAllCompanies(res));
-  });
+  API.fetchAllCompanies()
+    .then((res) => {
+      let companies = res.data.reduce((acc, cur) => {
+        return { ...acc, [cur.id]: cur };
+      }, {});
+      dispatch(receiveAllCompanies(companies));
+    })
+    .catch((err) => console.error(err.detail));

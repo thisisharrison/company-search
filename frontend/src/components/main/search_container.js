@@ -1,11 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { InputGroup, FormControl, Button, Form } from "react-bootstrap";
 import { connect } from "react-redux";
 import { fetchCompanies } from "../../actions/company_action";
+import { fetchUserFavorites } from "../../actions/favorite_action";
 import { filterFavorite } from "../../reducers/selectors";
 
-export const SearchContainer = ({ fetchCompanies, filterFavorite }) => {
+export const SearchContainer = ({
+  fetchCompanies,
+  filterFavorite,
+  loggedIn,
+  fetchUserFavorites,
+}) => {
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (loggedIn) {
+      fetchUserFavorites();
+    }
+    fetchCompanies();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,11 +58,14 @@ export const SearchContainer = ({ fetchCompanies, filterFavorite }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  loggedIn: state.session.isAuthenticated,
+});
 
 const mapDispatchToProps = ({ entities }) => (dispatch) => ({
   filterFavorite: () => dispatch(filterFavorite()),
   fetchCompanies: () => dispatch(fetchCompanies()),
+  fetchUserFavorites: () => dispatch(fetchUserFavorites()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchContainer);

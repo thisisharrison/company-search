@@ -17,4 +17,4 @@ export const removeFavorite = (id) =>
   axios.post(`/api/companies/${id}/unfavorite`);
 
 export const currentUserFavorites = () =>
-  axios.get("api/companies/my-favorites");
+  axios.get("/api/companies/my-favorites");

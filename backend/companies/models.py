@@ -10,7 +10,7 @@ class Company(models.Model):
   phone = models.CharField(max_length=100)
   website = models.URLField(max_length=200)
   created_at = models.DateTimeField(auto_now_add=True)
-  favorites = models.ManyToManyField(UserAccount)
+  favorites = models.ManyToManyField(UserAccount, blank=True)
 
   def __str__(self):
     return self.name

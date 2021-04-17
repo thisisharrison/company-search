@@ -48,7 +48,7 @@ const initialState = {
 
 const entitiesReducer = (state = initialState, action) => {
   let newState = Object.assign({}, state);
-  switch (action.key) {
+  switch (action.type) {
     case RECEIVE_ALL_COMPANIES:
       newState.all = action.companies;
       return newState;

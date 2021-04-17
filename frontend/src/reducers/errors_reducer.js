@@ -9,6 +9,8 @@ const errorReducer = (state = initialState, action) => {
   let newState = Object.assign({}, state);
   switch (action.key) {
     case RECEIVE_AUTH_ERRORS:
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
       newState.session = action.errors;
       return newState;
 

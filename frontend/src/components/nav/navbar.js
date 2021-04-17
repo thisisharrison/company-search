@@ -5,10 +5,10 @@ import { Nav, Navbar } from "react-bootstrap";
 import { logoutUser } from "../../actions/session_action";
 
 const mapStateToProps = ({ session }) => {
-  const currentUser = session.user;
-  const loggedIn = !!currentUser;
+  const user = session.user;
+  const loggedIn = session.isAuthenticated;
   return {
-    currentUser,
+    user,
     loggedIn,
   };
 };
@@ -17,7 +17,7 @@ const mapDispatchToProps = (state) => (dispatch) => ({
   logoutUser: () => dispatch(logoutUser()),
 });
 
-const NavBarContainer = ({ currentUser, loggedIn, logoutUser }) => {
+const NavBarContainer = ({ user, loggedIn, logoutUser }) => {
   const handleLogout = (e) => {
     e.preventDefault();
     logoutUser();
@@ -54,11 +54,11 @@ const NavBarContainer = ({ currentUser, loggedIn, logoutUser }) => {
               <LinkContainer to="/reset-password">
                 <Nav.Link>Change Password</Nav.Link>
               </LinkContainer>
+              <Navbar.Text className="ml-5">
+                Signed in as: {user ? user.username : null}
+              </Navbar.Text>
             </>
           )}
-          <Navbar.Text className="ml-5">
-            Signed in as: {currentUser.username}
-          </Navbar.Text>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

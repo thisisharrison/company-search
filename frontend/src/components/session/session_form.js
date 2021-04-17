@@ -1,14 +1,21 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
-const SessionForm = ({ formType }) => {
+const SessionForm = ({
+  formType,
+  processForm,
+  history,
+  uid = undefined,
+  token = undefined,
+}) => {
   const [formData, setFormData] = useState({});
 
   const header = {
     login: "Log In to Company Search",
     signup: "Create an Account",
     reset_password: "Reset Password",
+    set_new_password: "Set New Password",
   };
 
   const handleChange = (e) => {
@@ -18,7 +25,16 @@ const SessionForm = ({ formType }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    let formCopy = Object.assign({}, formData);
+    if (formType === "set_new_password") {
+      formCopy.uid = uid;
+      formCopy.token = token;
+    }
+    new Promise((resolve) => resolve(processForm(formCopy))).then((res) => {
+      if (res) {
+        history.push("/");
+      }
+    });
   };
 
   return (
@@ -30,7 +46,7 @@ const SessionForm = ({ formType }) => {
       </Row>
       <Row>
         <Form style={{ width: "100%" }} onSubmit={handleSubmit}>
-          {formType !== "reset_password" && (
+          {formType !== "reset_password" && formType !== "set_new_password" && (
             <Col xs="12">
               <Form.Group controlId={`${formType}Username`}>
                 <Form.Label>Username</Form.Label>
@@ -58,7 +74,7 @@ const SessionForm = ({ formType }) => {
             </Col>
           )}
 
-          {formType !== "reset_password" && (
+          {formType !== "reset_password" && formType !== "set_new_password" && (
             <Col xs="12">
               <Form.Group controlId={`${formType}Password`}>
                 <Form.Label>Password</Form.Label>
@@ -75,6 +91,33 @@ const SessionForm = ({ formType }) => {
                 )}
               </Form.Group>
             </Col>
+          )}
+
+          {formType === "set_new_password" && (
+            <>
+              <Col xs="12">
+                <Form.Group controlId={`${formType}NewPassword`}>
+                  <Form.Label>New Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="New Password"
+                    name="new_password"
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs="12">
+                <Form.Group controlId={`${formType}ConfirmNewPassword`}>
+                  <Form.Label>Confirm Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Confirm New Password"
+                    name="re_new_password"
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </Col>
+            </>
           )}
 
           <Col>
@@ -106,4 +149,4 @@ const SessionForm = ({ formType }) => {
   );
 };
 
-export default SessionForm;
+export default withRouter(SessionForm);

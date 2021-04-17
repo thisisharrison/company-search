@@ -6,9 +6,11 @@ import { fetchUserFavorites } from "../../actions/favorite_action";
 import {
   filterFavorites,
   unfilterFavorites,
+  updateSearchQuery,
 } from "../../actions/search_action";
 
 export const SearchContainer = ({
+  updateSearchQuery,
   fetchCompanies,
   unfilterFavorites,
   filterFavorites,
@@ -22,13 +24,13 @@ export const SearchContainer = ({
     if (loggedIn) {
       fetchUserFavorites();
     }
-    fetchCompanies();
+    fetchCompanies(search);
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(search);
-    fetchCompanies();
+    updateSearchQuery(search);
+    fetchCompanies(search);
   };
 
   const handleChange = (e) => {
@@ -73,11 +75,12 @@ const mapStateToProps = (state) => ({
   loggedIn: state.session.isAuthenticated,
 });
 
-const mapDispatchToProps = (state) => (dispatch) => ({
-  fetchCompanies: () => dispatch(fetchCompanies()),
+const mapDispatchToProps = (dispatch) => ({
+  fetchCompanies: (query) => dispatch(fetchCompanies(query)),
   fetchUserFavorites: () => dispatch(fetchUserFavorites()),
   filterFavorites: () => dispatch(filterFavorites()),
   unfilterFavorites: () => dispatch(unfilterFavorites()),
+  updateSearchQuery: (query) => dispatch(updateSearchQuery(query)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchContainer);

@@ -3,6 +3,7 @@ import {
   REMOVE_FROM_FAVORITE,
   RECEIVE_USERS_FAVORITES,
 } from "../actions/favorite_action";
+import { RECEIVE_USER_LOGOUT } from "../actions/session_action";
 
 const initialState = {
   favorites: [],
@@ -22,6 +23,9 @@ const userReducer = (state = initialState, action) => {
     case RECEIVE_USERS_FAVORITES:
       newState.favorites = action.ids;
       return newState;
+
+    case RECEIVE_USER_LOGOUT:
+      return initialState;
 
     default:
       return state;

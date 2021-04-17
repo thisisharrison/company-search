@@ -1,6 +1,12 @@
 import axios from "axios";
 
-export const fetchAllCompanies = () => axios.get("/api/companies/");
+export const fetchAllCompanies = (query) => {
+  if (query) {
+    return axios.get(`/api/companies?search=${query}`);
+  } else {
+    return axios.get("/api/companies/");
+  }
+};
 
 export const fetchSingleCompany = (id) => axios.get(`/api/companies/${id}`);
 

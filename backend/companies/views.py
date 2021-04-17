@@ -6,12 +6,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Company
 from .serializers import CompanySerializer
+import pdb
 
 # Create your views here.
 
 # index and create
 class CompanyList(APIView):
   def get(self, request, format=None):
+    # pdb.set_trace()
     if request.query_params:
       companies = Company.objects.filter(name__icontains=request.query_params["search"])
     else:

@@ -7,8 +7,8 @@ export const receiveAllCompanies = (companies) => ({
   companies,
 });
 
-export const fetchCompanies = () => (dispatch) =>
-  API.fetchAllCompanies()
+export const fetchCompanies = (query) => (dispatch) =>
+  API.fetchAllCompanies(query)
     .then((res) => {
       let companies = res.data.reduce((acc, cur) => {
         return { ...acc, [cur.id]: cur };

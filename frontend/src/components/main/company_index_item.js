@@ -47,11 +47,9 @@ const CompanyIndexItem = ({
             <strong>Email:</strong> {company.email}
           </li>
           <li>
-            <strong>Phone:</strong> {company.phone_number}
+            <strong>Phone:</strong> {company.phone}
           </li>
         </ul>
-        {/* debugging */}
-        {/* {JSON.stringify(company)} */}
       </Card.Body>
     </Card>
   );

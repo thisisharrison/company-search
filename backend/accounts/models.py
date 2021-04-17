@@ -4,10 +4,10 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 class UserAccountManager(BaseUserManager):
   def create_user(self, username, email, password=None):
     if username is None:
-      raise TypeError('Username cannot be blank.')
+      raise ValueError('Username cannot be blank.')
 
     if email is None:
-      raise TypeError('Email cannout be blank.')
+      raise ValueError('Email cannout be blank.')
 
     print(username)
     print(email)
@@ -21,7 +21,7 @@ class UserAccountManager(BaseUserManager):
 
   def create_superuser(self, username, email, password=None):
     if password is None:
-      raise TypeError('Superuser must have password.')
+      raise ValueError('Superuser must have password.')
     
     user = self.create_user(username, email, password)
     

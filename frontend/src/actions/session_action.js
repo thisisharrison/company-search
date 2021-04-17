@@ -9,6 +9,7 @@ export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_FAIL = "AUTH_FAIL";
 export const RESET_PASSWORD_SENT = "RESET_PASSWORD_SENT";
 export const RECEIVE_CONFIRM_NEW_PASSWORD = "RECEIVE_CONFIRM_NEW_PASSWORD";
+export const RECEIVE_ACTIVATE_USER = "RECEIVE_ACTIVATE_USER";
 
 export const RECEIVE_USER_SIGN_IN = "RECEIVE_USER_SIGN_IN";
 export const RECEIVE_AUTH_ERRORS = "RECEIVE_AUTH_ERRORS";
@@ -56,6 +57,10 @@ export const receiveConfirmNewPassword = () => ({
   type: RECEIVE_CONFIRM_NEW_PASSWORD,
 });
 
+export const receiveActivateUser = () => ({
+  type: RECEIVE_ACTIVATE_USER,
+});
+
 export const loginUser = (data) => (dispatch) =>
   API.login(data)
     .then(({ data }) => {
@@ -82,9 +87,11 @@ export const logout = () => (dispatch) => {
 };
 
 export const registerUser = (data) => (dispatch) =>
-  API.register(data).then((res) => {
-    dispatch(receieveUserSignIn());
-  });
+  API.register(data)
+    .then((res) => {
+      dispatch(receieveUserSignIn());
+    })
+    .catch((err) => console.error(err));
 
 export const confirmNewPassword = (data) => (dispatch) =>
   API.resetPasswordConfirm(data)
@@ -99,4 +106,9 @@ export const resetPassword = (data) => (dispatch) =>
       dispatch(resetPasswordSent());
       return { status: "sent" };
     })
+    .catch((err) => console.error(err));
+
+export const activateUser = (data) => (dispatch) =>
+  API.activateUser(data)
+    .then((res) => dispatch(receiveActivateUser()))
     .catch((err) => console.error(err));

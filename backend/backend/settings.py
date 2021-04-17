@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'rest_framework',
+    'rest_framework_simplejwt',
     'djoser',
     'accounts',
     'companies',
@@ -165,8 +166,8 @@ if DEBUG:
 
 # Djoser
 DJOSER = {
-  'PASSWORD_RESET_CONFIRM_URL': '/password/reset/confirm/{uid}/{token}',
-  'ACTIVATION_URL': '/activate/{uid}/{token}',
+  'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+  'ACTIVATION_URL': 'activate/{uid}/{token}',
   'SEND_ACTIVATION_EMAIL': True,
   'SERIALIZERS': {
     'user_create': 'accounts.serializer.UserCreateSerializer',

@@ -6,6 +6,7 @@ import configureStore from "./store/store";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import * as API from "./util/session_api_util";
 
 document.addEventListener("DOMContentLoaded", () => {
   let store;
@@ -28,4 +29,5 @@ document.addEventListener("DOMContentLoaded", () => {
   window.axios = axios;
   window.store = store;
   window.getState = store.getState();
+  window.API = API;
 });

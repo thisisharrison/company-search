@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
-const SessionForm = ({ formType }) => {
+const SessionForm = ({ formType, processForm }) => {
   const [formData, setFormData] = useState({});
 
   const header = {
@@ -20,6 +20,7 @@ const SessionForm = ({ formType }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
+    processForm(formData);
   };
 
   return (

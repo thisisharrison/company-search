@@ -19,10 +19,23 @@ export const resetPasswordConfirm = (data) =>
   axios.post("/auth/users/reset_password_confirm/", data);
 
 // Set headers with the access token
-export const setAuthToken = ({ access }) => {
-  if (access) {
-    axios.defaults.headers.common["Authorization"] = access;
+export const setAuthToken = (data) => {
+  if (data) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${data.access}`;
   } else {
     delete axios.defaults.headers.common["Authorization"];
+  }
+};
+
+// get current user
+export const currentUser = ({ access }) => {
+  if (access) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
+    };
+    // axios.defaults.headers.common["Authorization"] = `JWT ${access}`;
+    return axios.get("/auth/users/me/", config);
   }
 };

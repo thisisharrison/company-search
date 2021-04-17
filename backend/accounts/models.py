@@ -9,6 +9,10 @@ class UserAccountManager(BaseUserManager):
     if email is None:
       raise TypeError('Email cannout be blank.')
 
+    print(username)
+    print(email)
+    print(password)
+    
     user = self.model(username=username, email=self.normalize_email(email))
     user.set_password(password)
     user.save()

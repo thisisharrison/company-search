@@ -9,6 +9,7 @@ const SessionForm = ({ formType }) => {
     login: "Log In to Company Search",
     signup: "Create an Account",
     reset_password: "Reset Password",
+    set_new_password: "Set New Password",
   };
 
   const handleChange = (e) => {
@@ -30,7 +31,7 @@ const SessionForm = ({ formType }) => {
       </Row>
       <Row>
         <Form style={{ width: "100%" }} onSubmit={handleSubmit}>
-          {formType !== "reset_password" && (
+          {formType !== "reset_password" && formType !== "set_new_password" && (
             <Col xs="12">
               <Form.Group controlId={`${formType}Username`}>
                 <Form.Label>Username</Form.Label>
@@ -58,7 +59,7 @@ const SessionForm = ({ formType }) => {
             </Col>
           )}
 
-          {formType !== "reset_password" && (
+          {formType !== "reset_password" && formType !== "set_new_password" && (
             <Col xs="12">
               <Form.Group controlId={`${formType}Password`}>
                 <Form.Label>Password</Form.Label>
@@ -75,6 +76,33 @@ const SessionForm = ({ formType }) => {
                 )}
               </Form.Group>
             </Col>
+          )}
+
+          {formType === "set_new_password" && (
+            <>
+              <Col xs="12">
+                <Form.Group controlId={`${formType}Password`}>
+                  <Form.Label>New Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="New Password"
+                    name="new_password"
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs="12">
+                <Form.Group controlId={`${formType}Password`}>
+                  <Form.Label>Confirm Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Confirm New Password"
+                    name="re_new_password"
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </Col>
+            </>
           )}
 
           <Col>

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'rest_framework',
+    'djoser',
+    'accounts',
     'companies',
 ]
 
@@ -78,8 +81,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'company_search',
+        'HOST': 'localhost'
     }
 }
 
@@ -126,3 +132,51 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom REST Auth using JWT
+AUTH_USER_MODEL = 'accounts.UserAccount'
+
+# REST framework
+REST_FRAMEWORK = {
+  # 'DEFAULT_PERMISSION_CLASSES': [
+  #   'rest_framework.permissions.IsAuthenticated'
+  # ],
+  'DEFAULT_AUTHENTICATION_CLASSES': (
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+  ),
+}
+
+# JWT
+SIMPLE_JWT = {
+  'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+  'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+  'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+if DEBUG:
+  EMAIL_HOST = 'localhost'
+  EMAIL_PORT = 1025
+  EMAIL_HOST_USER = ''
+  EMAIL_HOST_PASSWORD = ''
+  EMAIL_USE_TLS = False
+  DEFAULT_FROM_EMAIL = 'testing@example.com'
+
+# Djoser
+DJOSER = {
+  'PASSWORD_RESET_CONFIRM_URL': '/password/reset/confirm/{uid}/{token}',
+  'ACTIVATION_URL': '/activate/{uid}/{token}',
+  'SEND_ACTIVATION_EMAIL': True,
+  'SERIALIZERS': {
+    'user_create': 'accounts.serializer.UserCreateSerializer',
+    'user': 'accounts.serializer.UserCreateSerializer',
+    'current_user': 'accounts.serializer.UserCreateSerializer'
+  },
+  
+  'SEND_CONFIRMATION_EMAIL': True,
+  'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+  'PASSWORD_RESET_CONFIRM_RETYPE': True,
+  'LOGOUT_ON_PASSWORD_CHANGE': True,
+  'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True
+}

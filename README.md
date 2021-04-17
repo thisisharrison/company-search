@@ -28,3 +28,11 @@
     ```
 
     Project is now visible on `localhost:3000`.
+
+3. **Start Email Server**
+    
+    Set up email development server with following command. We will receive the emails locally and display them to the terminal.
+    
+    ```shell
+    python -m smtpd -n -c DebuggingServer localhost:1025
+    ```

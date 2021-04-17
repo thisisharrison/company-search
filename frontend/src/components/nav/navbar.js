@@ -3,13 +3,12 @@ import { connect } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Nav, Navbar } from "react-bootstrap";
 import { logoutUser } from "../../actions/session_action";
-import { Redirect } from "react-router";
 
 const mapStateToProps = ({ session }) => {
-  const currentUser = session.user;
-  const loggedIn = session.loggedIn;
+  const user = session.user;
+  const loggedIn = session.isAuthenticated;
   return {
-    currentUser,
+    user,
     loggedIn,
   };
 };
@@ -18,7 +17,7 @@ const mapDispatchToProps = (state) => (dispatch) => ({
   logoutUser: () => dispatch(logoutUser()),
 });
 
-const NavBarContainer = ({ currentUser, loggedIn, logoutUser }) => {
+const NavBarContainer = ({ user, loggedIn, logoutUser }) => {
   const handleLogout = (e) => {
     e.preventDefault();
     logoutUser();
@@ -56,7 +55,7 @@ const NavBarContainer = ({ currentUser, loggedIn, logoutUser }) => {
                 <Nav.Link>Change Password</Nav.Link>
               </LinkContainer>
               <Navbar.Text className="ml-5">
-                Signed in as: {currentUser ? currentUser.username : null}
+                Signed in as: {user ? user.username : null}
               </Navbar.Text>
             </>
           )}

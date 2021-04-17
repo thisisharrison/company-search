@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
-const SessionForm = ({ formType, processForm }) => {
+const SessionForm = ({
+  formType,
+  processForm,
+  history,
+  uid = undefined,
+  token = undefined,
+}) => {
   const [formData, setFormData] = useState({});
 
   const header = {
@@ -19,8 +25,17 @@ const SessionForm = ({ formType, processForm }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    processForm(formData);
+    let formCopy = Object.assign({}, formData);
+    console.log(formCopy);
+    if (formType === "set_new_password") {
+      formCopy.uid = uid;
+      formCopy.token = token;
+    }
+    new Promise((resolve) => resolve(processForm(formCopy))).then((res) => {
+      if (res) {
+        history.push("/");
+      }
+    });
   };
 
   return (
@@ -82,7 +97,7 @@ const SessionForm = ({ formType, processForm }) => {
           {formType === "set_new_password" && (
             <>
               <Col xs="12">
-                <Form.Group controlId={`${formType}Password`}>
+                <Form.Group controlId={`${formType}NewPassword`}>
                   <Form.Label>New Password</Form.Label>
                   <Form.Control
                     type="password"
@@ -93,7 +108,7 @@ const SessionForm = ({ formType, processForm }) => {
                 </Form.Group>
               </Col>
               <Col xs="12">
-                <Form.Group controlId={`${formType}Password`}>
+                <Form.Group controlId={`${formType}ConfirmNewPassword`}>
                   <Form.Label>Confirm Password</Form.Label>
                   <Form.Control
                     type="password"
@@ -135,4 +150,4 @@ const SessionForm = ({ formType, processForm }) => {
   );
 };
 
-export default SessionForm;
+export default withRouter(SessionForm);

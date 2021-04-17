@@ -21,6 +21,14 @@
 
 2. **Start Servers**
 
+    Create database with following psql command. 
+
+    ```shell
+    psql
+    CREATE DATABASE company_search;
+    ```
+
+
     Inside frontend directory, following script uses `Concurrently` to first run the backend server then start the frontend server.
 
     ```shell

@@ -19,9 +19,9 @@ export const resetPasswordConfirm = (data) =>
   axios.post("/auth/users/reset_password_confirm/", data);
 
 // Set headers with the access token
-export const setAuthToken = (data) => {
-  if (data) {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${data.access}`;
+export const setAuthToken = (token) => {
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   } else {
     delete axios.defaults.headers.common["Authorization"];
   }
@@ -39,3 +39,6 @@ export const currentUser = ({ access }) => {
     return axios.get("/auth/users/me/", config);
   }
 };
+
+export const checkAuthentication = (data) =>
+  axios.post("/auth/jwt/verify", data);

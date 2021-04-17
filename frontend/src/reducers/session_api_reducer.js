@@ -4,6 +4,9 @@ import {
   RECEIVE_CURRENT_USER,
   RECEIVE_USER_LOGOUT,
   RECEIVE_USER_SIGN_IN,
+  AUTH_SUCCESS,
+  AUTH_FAIL,
+  RECEIVE_CONFIRM_NEW_PASSWORD,
 } from "../actions/session_action";
 
 // mock data
@@ -11,7 +14,6 @@ const initialState = {
   access: localStorage.getItem("access"),
   refresh: localStorage.getItem("refresh"),
   isAuthenticated: false,
-  loggedIn: false,
   user: undefined,
 };
 
@@ -21,7 +23,6 @@ const sessionReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        loggedIn: true,
         access: action.payload.access,
         refresh: action.payload.refresh,
       };
@@ -30,10 +31,21 @@ const sessionReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: false,
-        loggedIn: false,
         access: null,
         refresh: null,
         user: undefined,
+      };
+
+    case AUTH_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: true,
+      };
+
+    case AUTH_FAIL:
+      return {
+        ...state,
+        isAuthenticated: false,
       };
 
     case RECEIVE_CURRENT_USER:

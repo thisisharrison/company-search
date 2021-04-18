@@ -4,6 +4,7 @@ import errors from "./errors_reducer";
 import entities from "./entities_reducer";
 import user from "./user_reducer";
 import search from "./search_reducer";
+import ui from "./ui_reducer";
 
 const rootReducer = combineReducers({
   session,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   entities,
   user,
   search,
+  ui,
 });
 
 export default rootReducer;

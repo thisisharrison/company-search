@@ -11,7 +11,7 @@ export const RESET_PASSWORD_SENT = "RESET_PASSWORD_SENT";
 export const RECEIVE_CONFIRM_NEW_PASSWORD = "RECEIVE_CONFIRM_NEW_PASSWORD";
 export const RECEIVE_ACTIVATE_USER = "RECEIVE_ACTIVATE_USER";
 
-export const RECEIVE_USER_SIGN_IN = "RECEIVE_USER_SIGN_IN";
+export const RECEIVE_USER_REGISTER = "RECEIVE_USER_REGISTER";
 export const RECEIVE_AUTH_ERRORS = "RECEIVE_AUTH_ERRORS";
 
 export const loginSuccess = (payload) => ({
@@ -28,8 +28,8 @@ export const receiveCurrentUser = (payload) => ({
   payload,
 });
 
-export const receieveUserSignIn = () => ({
-  type: RECEIVE_USER_SIGN_IN,
+export const receieveUserRegister = () => ({
+  type: RECEIVE_USER_REGISTER,
 });
 
 export const authSuccess = () => ({
@@ -86,7 +86,7 @@ export const logout = () => (dispatch) => {
 export const registerUser = (data) => (dispatch) =>
   API.register(data)
     .then((res) => {
-      dispatch(receieveUserSignIn());
+      dispatch(receieveUserRegister());
       return { state: "register_user" };
     })
     .catch((err) => dispatch(receiveAuthErrors(err.response.data)));
@@ -95,6 +95,7 @@ export const confirmNewPassword = (data) => (dispatch) =>
   API.resetPasswordConfirm(data)
     .then((res) => {
       logout()(dispatch);
+      dispatch(receiveConfirmNewPassword());
       return { status: "confirm_new_password" };
     })
     .catch((err) => dispatch(receiveAuthErrors(err.response.data)));

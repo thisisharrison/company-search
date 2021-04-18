@@ -8,10 +8,12 @@ import SignUp from "./session/signup_container";
 import ResetPassword from "./session/password_reset_container";
 import ResetPasswordConfirm from "./session/new_password_container";
 import Activate from "./session/activate";
+import AlertContainer from "./alert/alert_container";
 import { AuthRoute, ProtectedRoute } from "../util/route_util";
 
 const App = () => (
   <div>
+    <AlertContainer />
     <NavBar />
     <Switch>
       <Route exact path="/" component={Splash} />

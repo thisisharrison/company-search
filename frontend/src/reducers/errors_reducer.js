@@ -4,7 +4,7 @@ import {
   RECEIVE_CURRENT_USER,
   RECEIVE_USER_LOGOUT,
   AUTH_SUCCESS,
-  RECEIVE_USER_SIGN_IN,
+  RECEIVE_USER_REGISTER,
   RECEIVE_CONFIRM_NEW_PASSWORD,
 } from "../actions/session_action";
 
@@ -26,7 +26,7 @@ const errorReducer = (state = initialState, action) => {
     case RECEIVE_CURRENT_USER:
     case RECEIVE_USER_LOGOUT:
     case AUTH_SUCCESS:
-    case RECEIVE_USER_SIGN_IN:
+    case RECEIVE_USER_REGISTER:
     case RECEIVE_CONFIRM_NEW_PASSWORD:
       newState.session = {};
       return newState;

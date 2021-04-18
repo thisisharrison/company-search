@@ -5,8 +5,6 @@ import {
   RECEIVE_USER_LOGOUT,
   AUTH_SUCCESS,
   AUTH_FAIL,
-  RECEIVE_USER_SIGN_IN,
-  RECEIVE_CONFIRM_NEW_PASSWORD,
 } from "../actions/session_action";
 
 // mock data

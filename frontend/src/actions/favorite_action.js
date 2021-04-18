@@ -21,14 +21,14 @@ export const receiveUsersFavorites = (ids) => ({
 export const postFavorite = (id) => (dispatch) =>
   API.addFavorite(id)
     .then((res) => dispatch(addFavorite(res.data.id)))
-    .catch((err) => console.error(err));
+    .catch((err) => console.error(err.response.data));
 
 export const removeFavorite = (id) => (dispatch) =>
   API.removeFavorite(id)
     .then((res) => dispatch(removeFromFavorite(res.data.id)))
-    .catch((err) => console.error(err));
+    .catch((err) => console.error(err.response.data));
 
 export const fetchUserFavorites = () => (dispatch) =>
   API.currentUserFavorites()
     .then((res) => dispatch(receiveUsersFavorites(res.data)))
-    .catch((err) => console.error(err));
+    .catch((err) => console.error(err.response.data));

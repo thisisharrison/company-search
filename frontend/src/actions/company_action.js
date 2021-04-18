@@ -15,4 +15,4 @@ export const fetchCompanies = (query) => (dispatch) =>
       }, {});
       dispatch(receiveAllCompanies(companies));
     })
-    .catch((err) => console.error(err.detail));
+    .catch((err) => console.error(err.response.data));

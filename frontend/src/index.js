@@ -4,7 +4,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import Root from "./components/root";
 import configureStore from "./store/store";
-import "./App.css";
+import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import * as API from "./util/session_api_util";

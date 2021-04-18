@@ -2,7 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Nav, Navbar } from "react-bootstrap";
-import { logoutUser } from "../../actions/session_action";
+import { logout } from "../../actions/session_action";
+import { withRouter } from "react-router";
 
 const mapStateToProps = ({ session }) => {
   const user = session.user;
@@ -14,17 +15,18 @@ const mapStateToProps = ({ session }) => {
 };
 
 const mapDispatchToProps = (state) => (dispatch) => ({
-  logoutUser: () => dispatch(logoutUser()),
+  logout: () => dispatch(logout()),
 });
 
-const NavBarContainer = ({ user, loggedIn, logoutUser }) => {
+const NavBarContainer = ({ user, loggedIn, logout, history }) => {
   const handleLogout = (e) => {
     e.preventDefault();
-    logoutUser();
+    logout();
+    history.push("/");
   };
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="md">
       <LinkContainer to="/">
         <Navbar.Brand>Company Search</Navbar.Brand>
       </LinkContainer>
@@ -54,8 +56,8 @@ const NavBarContainer = ({ user, loggedIn, logoutUser }) => {
               <LinkContainer to="/reset-password">
                 <Nav.Link>Change Password</Nav.Link>
               </LinkContainer>
-              <Navbar.Text className="ml-5">
-                Signed in as: {user ? user.username : null}
+              <Navbar.Text>
+                | Signed in as: {user ? user.username : null}
               </Navbar.Text>
             </>
           )}
@@ -65,4 +67,6 @@ const NavBarContainer = ({ user, loggedIn, logoutUser }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBarContainer);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(NavBarContainer)
+);

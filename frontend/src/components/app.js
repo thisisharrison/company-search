@@ -8,18 +8,20 @@ import SignUp from "./session/signup_container";
 import ResetPassword from "./session/password_reset_container";
 import ResetPasswordConfirm from "./session/new_password_container";
 import Activate from "./session/activate";
+import AlertContainer from "./alert/alert_container";
 import { AuthRoute, ProtectedRoute } from "../util/route_util";
 
 const App = () => (
   <div>
+    <AlertContainer />
     <NavBar />
     <Switch>
       <Route exact path="/" component={Splash} />
-      <Route exact path="/companies" component={MainPage} />
+      <ProtectedRoute exact path="/companies" component={MainPage} />
       <AuthRoute exact path="/account/login" component={Login} />
       <AuthRoute exact path="/account/signup" component={SignUp} />
-      <AuthRoute exact path="/reset-password" component={ResetPassword} />
-      <AuthRoute
+      <Route exact path="/reset-password" component={ResetPassword} />
+      <Route
         exact
         path="/password/reset/confirm/:uid/:token"
         component={ResetPasswordConfirm}

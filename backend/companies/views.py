@@ -6,13 +6,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Company
 from .serializers import CompanySerializer
+import pdb
 
 # Create your views here.
 
 # index and create
 class CompanyList(APIView):
   def get(self, request, format=None):
-    companies = Company.objects.all()
+    # pdb.set_trace()
+    if request.query_params:
+      companies = Company.objects.filter(name__icontains=request.query_params["search"])
+    else:
+      companies = Company.objects.all()
     serializer = CompanySerializer(companies, many=True)
     return Response(serializer.data)
   
@@ -47,3 +52,31 @@ class CompanyDetail(APIView):
     company = self.get_object(pk)
     company.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['POST'])
+def add_favorite(request, pk):
+  if request.user.is_anonymous:
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
+  
+  company = Company.objects.get(pk=pk)
+  company.favorites.add(request.user)
+  serializer = CompanySerializer(company)
+  return Response(serializer.data)
+
+@api_view(['POST'])
+def remove_favorite(request, pk):
+  if request.user.is_anonymous:
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
+  
+  company = Company.objects.get(pk=pk)
+  company.favorites.remove(request.user)
+  serializer = CompanySerializer(company)
+  return Response(serializer.data)
+
+@api_view(['GET'])
+def my_favourites(request):
+  if request.user.is_anonymous:
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
+  
+  companies = Company.objects.filter(favorites=request.user.id).values_list(flat=True)
+  return Response(companies)

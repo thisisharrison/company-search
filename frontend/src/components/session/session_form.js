@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 
 const SessionForm = ({
   formType,
@@ -8,8 +8,18 @@ const SessionForm = ({
   history,
   uid = undefined,
   token = undefined,
+  errors,
 }) => {
   const [formData, setFormData] = useState({});
+  const [hasErrors, setHasErrors] = useState(false);
+
+  useEffect(() => {
+    if (Object.keys(errors).length) {
+      setHasErrors(true);
+    } else {
+      setHasErrors(false);
+    }
+  }, [errors]);
 
   const header = {
     login: "Log In to Company Search",
@@ -32,7 +42,17 @@ const SessionForm = ({
     }
     new Promise((resolve) => resolve(processForm(formCopy))).then((res) => {
       if (res) {
-        history.push("/");
+        if (res.status === "password_sent") {
+          history.push("/");
+        } else if (res.status === "activated_user") {
+          history.push("/account/login");
+        } else if (res.status === "confirm_new_password") {
+          history.push("/account/login");
+        } else if (res.status === "login_success") {
+          history.push("/companies");
+        } else if (res.state === "register_user") {
+          history.push("/account/login");
+        }
       }
     });
   };
@@ -44,6 +64,23 @@ const SessionForm = ({
           <h2>{header[formType]}</h2>
         </Col>
       </Row>
+      {hasErrors && (
+        <Row>
+          <Col>
+            <Alert variant="danger">
+              <ul>
+                {Object.keys(errors).map((field) => {
+                  return (
+                    <li key={field}>
+                      {field}: {errors[field]}
+                    </li>
+                  );
+                })}
+              </ul>
+            </Alert>
+          </Col>
+        </Row>
+      )}
       <Row>
         <Form style={{ width: "100%" }} onSubmit={handleSubmit}>
           {formType !== "reset_password" && formType !== "set_new_password" && (

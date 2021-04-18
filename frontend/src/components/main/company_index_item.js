@@ -1,11 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 
-const CompanyIndexItem = ({ company }) => {
-  const [fav, setFav] = useState(() => company.favorite);
+const CompanyIndexItem = ({
+  company,
+  isFavorite,
+  postFavorite,
+  removeFavorite,
+}) => {
+  const [fav, setFav] = useState(isFavorite);
+
+  useEffect(() => {
+    setFav(isFavorite);
+  }, [isFavorite]);
 
   const toggleFavorite = (e) => {
     e.preventDefault();
+    if (fav) {
+      removeFavorite(company.id);
+    } else {
+      postFavorite(company.id);
+    }
     setFav(!fav);
   };
 
@@ -33,11 +47,9 @@ const CompanyIndexItem = ({ company }) => {
             <strong>Email:</strong> {company.email}
           </li>
           <li>
-            <strong>Phone:</strong> {company.phone_number}
+            <strong>Phone:</strong> {company.phone}
           </li>
         </ul>
-        {/* debugging */}
-        {/* {JSON.stringify(company)} */}
       </Card.Body>
     </Card>
   );

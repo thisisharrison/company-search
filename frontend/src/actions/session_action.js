@@ -11,7 +11,7 @@ export const RESET_PASSWORD_SENT = "RESET_PASSWORD_SENT";
 export const RECEIVE_CONFIRM_NEW_PASSWORD = "RECEIVE_CONFIRM_NEW_PASSWORD";
 export const RECEIVE_ACTIVATE_USER = "RECEIVE_ACTIVATE_USER";
 
-export const RECEIVE_USER_SIGN_IN = "RECEIVE_USER_SIGN_IN";
+export const RECEIVE_USER_REGISTER = "RECEIVE_USER_REGISTER";
 export const RECEIVE_AUTH_ERRORS = "RECEIVE_AUTH_ERRORS";
 
 export const loginSuccess = (payload) => ({
@@ -28,8 +28,8 @@ export const receiveCurrentUser = (payload) => ({
   payload,
 });
 
-export const receieveUserSignIn = () => ({
-  type: RECEIVE_USER_SIGN_IN,
+export const receieveUserRegister = () => ({
+  type: RECEIVE_USER_REGISTER,
 });
 
 export const authSuccess = () => ({
@@ -71,16 +71,14 @@ export const loginUser = (data) => (dispatch) =>
       delete decoded["jti"];
       delete decoded["token_type"];
       dispatch(receiveCurrentUser(decoded));
+      return { status: "login_success" };
     })
-    .catch((err) => {
-      dispatch(receiveAuthErrors(err));
-      dispatch(loginFail());
-    });
+    .catch((err) => dispatch(receiveAuthErrors(err.response.data)));
 
 export const logout = () => (dispatch) => {
+  localStorage.removeItem("jwtToken");
   localStorage.removeItem("access");
   localStorage.removeItem("refresh");
-  localStorage.removeItem("jwtToken");
   API.setAuthToken(false);
   dispatch(logoutUser());
 };
@@ -88,26 +86,32 @@ export const logout = () => (dispatch) => {
 export const registerUser = (data) => (dispatch) =>
   API.register(data)
     .then((res) => {
-      dispatch(receieveUserSignIn());
+      dispatch(receieveUserRegister());
+      return { state: "register_user" };
     })
-    .catch((err) => console.error(err));
+    .catch((err) => dispatch(receiveAuthErrors(err.response.data)));
 
 export const confirmNewPassword = (data) => (dispatch) =>
   API.resetPasswordConfirm(data)
     .then((res) => {
-      return logout()(dispatch);
+      logout()(dispatch);
+      dispatch(receiveConfirmNewPassword());
+      return { status: "confirm_new_password" };
     })
-    .catch((err) => console.error(err));
+    .catch((err) => dispatch(receiveAuthErrors(err.response.data)));
 
 export const resetPassword = (data) => (dispatch) =>
   API.resetPassword(data)
     .then((res) => {
       dispatch(resetPasswordSent());
-      return { status: "sent" };
+      return { status: "password_sent" };
     })
-    .catch((err) => console.error(err));
+    .catch((err) => dispatch(receiveAuthErrors(err.response.data)));
 
 export const activateUser = (data) => (dispatch) =>
   API.activateUser(data)
-    .then((res) => dispatch(receiveActivateUser()))
-    .catch((err) => console.error(err));
+    .then((res) => {
+      dispatch(receiveActivateUser());
+      return { status: "activated_user" };
+    })
+    .catch((err) => dispatch(receiveAuthErrors(err.response.data)));

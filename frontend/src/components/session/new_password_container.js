@@ -6,6 +6,7 @@ const mapStateToProps = (state, ownProps) => ({
   formType: "set_new_password",
   uid: ownProps.match.params.uid,
   token: ownProps.match.params.token,
+  errors: state.errors.session,
 });
 
 const mapDispatchToProps = (dispatch) => ({

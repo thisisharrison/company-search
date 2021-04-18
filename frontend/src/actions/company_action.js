@@ -7,7 +7,12 @@ export const receiveAllCompanies = (companies) => ({
   companies,
 });
 
-export const fetchCompanies = () => (dispatch) =>
-  API.fetchAllCompanies().then((res) => {
-    dispatch(receiveAllCompanies(res));
-  });
+export const fetchCompanies = (query) => (dispatch) =>
+  API.fetchAllCompanies(query)
+    .then((res) => {
+      let companies = res.data.reduce((acc, cur) => {
+        return { ...acc, [cur.id]: cur };
+      }, {});
+      dispatch(receiveAllCompanies(companies));
+    })
+    .catch((err) => console.error(err.response.data));

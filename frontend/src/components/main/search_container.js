@@ -1,16 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { InputGroup, FormControl, Button, Form } from "react-bootstrap";
 import { connect } from "react-redux";
 import { fetchCompanies } from "../../actions/company_action";
-import { filterFavorite } from "../../reducers/selectors";
+import { fetchUserFavorites } from "../../actions/favorite_action";
+import {
+  filterFavorites,
+  unfilterFavorites,
+  updateSearchQuery,
+} from "../../actions/search_action";
 
-export const SearchContainer = ({ fetchCompanies, filterFavorite }) => {
+export const SearchContainer = ({
+  updateSearchQuery,
+  fetchCompanies,
+  unfilterFavorites,
+  filterFavorites,
+  loggedIn,
+  fetchUserFavorites,
+}) => {
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState(false);
+
+  useEffect(() => {
+    if (loggedIn) {
+      fetchUserFavorites();
+    }
+    fetchCompanies(search);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(search);
-    fetchCompanies();
+    updateSearchQuery(search);
+    fetchCompanies(search);
   };
 
   const handleChange = (e) => {
@@ -19,7 +39,13 @@ export const SearchContainer = ({ fetchCompanies, filterFavorite }) => {
 
   const filterFav = (e) => {
     e.preventDefault();
-    filterFavorite();
+    if (filter) {
+      unfilterFavorites();
+      setFilter(false);
+    } else {
+      filterFavorites();
+      setFilter(true);
+    }
   };
 
   return (
@@ -37,7 +63,7 @@ export const SearchContainer = ({ fetchCompanies, filterFavorite }) => {
             Search
           </Button>
           <Button variant="outline-secondary" type="button" onClick={filterFav}>
-            Filter Favourites
+            {filter ? "Unfilter Favourites" : "Filter Favourites"}
           </Button>
         </InputGroup.Append>
       </InputGroup>
@@ -45,11 +71,16 @@ export const SearchContainer = ({ fetchCompanies, filterFavorite }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  loggedIn: state.session.isAuthenticated,
+});
 
-const mapDispatchToProps = ({ entities }) => (dispatch) => ({
-  filterFavorite: () => dispatch(filterFavorite()),
-  fetchCompanies: () => dispatch(fetchCompanies()),
+const mapDispatchToProps = (dispatch) => ({
+  fetchCompanies: (query) => dispatch(fetchCompanies(query)),
+  fetchUserFavorites: () => dispatch(fetchUserFavorites()),
+  filterFavorites: () => dispatch(filterFavorites()),
+  unfilterFavorites: () => dispatch(unfilterFavorites()),
+  updateSearchQuery: (query) => dispatch(updateSearchQuery(query)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchContainer);

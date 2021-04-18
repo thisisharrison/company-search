@@ -15,11 +15,11 @@ const App = () => (
     <NavBar />
     <Switch>
       <Route exact path="/" component={Splash} />
-      <Route exact path="/companies" component={MainPage} />
+      <ProtectedRoute exact path="/companies" component={MainPage} />
       <AuthRoute exact path="/account/login" component={Login} />
       <AuthRoute exact path="/account/signup" component={SignUp} />
-      <AuthRoute exact path="/reset-password" component={ResetPassword} />
-      <AuthRoute
+      <Route exact path="/reset-password" component={ResetPassword} />
+      <Route
         exact
         path="/password/reset/confirm/:uid/:token"
         component={ResetPasswordConfirm}

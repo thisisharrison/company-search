@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route, Redirect, withRouter } from "react-router-dom";
 
-// routes for authorization
+// routes for non logged in users only
 const Auth = ({ component: Component, loggedIn, ...rest }) => (
   <Route
     {...rest}
@@ -17,7 +17,7 @@ const Auth = ({ component: Component, loggedIn, ...rest }) => (
   />
 );
 
-// authenticated users only
+// routes for authenticated users only
 const Protected = ({ component: Component, loggedIn, ...rest }) => (
   <Route
     {...rest}

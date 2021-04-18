@@ -5,6 +5,7 @@ import SessionForm from "./session_form";
 
 const mapStateToProps = (state) => ({
   formType: "reset_password",
+  errors: state.errors.session,
 });
 
 const mapDispatchToProps = (dispatch) => ({

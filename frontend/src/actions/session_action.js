@@ -71,16 +71,14 @@ export const loginUser = (data) => (dispatch) =>
       delete decoded["jti"];
       delete decoded["token_type"];
       dispatch(receiveCurrentUser(decoded));
+      return { status: "login_success" };
     })
-    .catch((err) => {
-      dispatch(receiveAuthErrors(err));
-      dispatch(loginFail());
-    });
+    .catch((err) => dispatch(receiveAuthErrors(err.response.data)));
 
 export const logout = () => (dispatch) => {
+  localStorage.removeItem("jwtToken");
   localStorage.removeItem("access");
   localStorage.removeItem("refresh");
-  localStorage.removeItem("jwtToken");
   API.setAuthToken(false);
   dispatch(logoutUser());
 };
@@ -90,24 +88,28 @@ export const registerUser = (data) => (dispatch) =>
     .then((res) => {
       dispatch(receieveUserSignIn());
     })
-    .catch((err) => console.error(err));
+    .catch((err) => dispatch(receiveAuthErrors(err.response.data)));
 
 export const confirmNewPassword = (data) => (dispatch) =>
   API.resetPasswordConfirm(data)
     .then((res) => {
-      return logout()(dispatch);
+      logout()(dispatch);
+      return { status: "confirm_new_password" };
     })
-    .catch((err) => console.error(err));
+    .catch((err) => dispatch(receiveAuthErrors(err.response.data)));
 
 export const resetPassword = (data) => (dispatch) =>
   API.resetPassword(data)
     .then((res) => {
       dispatch(resetPasswordSent());
-      return { status: "sent" };
+      return { status: "password_sent" };
     })
-    .catch((err) => console.error(err));
+    .catch((err) => dispatch(receiveAuthErrors(err.response.data)));
 
 export const activateUser = (data) => (dispatch) =>
   API.activateUser(data)
-    .then((res) => dispatch(receiveActivateUser()))
-    .catch((err) => console.error(err));
+    .then((res) => {
+      dispatch(receiveActivateUser());
+      return { status: "activated_user" };
+    })
+    .catch((err) => dispatch(receiveAuthErrors(err.response.data)));

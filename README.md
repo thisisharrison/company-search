@@ -51,3 +51,55 @@
     ```python
     python -m smtpd -n -c DebuggingServer localhost:1025
     ```
+
+## Email Activation
+
+  In terminal you'll receive something as follow: 
+
+  ```shell
+  ---------- MESSAGE FOLLOWS ----------
+  
+  Subject: Account activation on localhost:8000
+  From: testing@example.com
+  To: demo@demo.com
+  
+  You are receiving this email because you need to finish activation process on localhost:8000.
+  
+  Please go to the following page to activate account:
+  http://localhost:8000/activate/MTE/ala82e-581a9c33e6f47dbc88c9770fa01df90d
+  ```
+  
+  Activate account on `http://localhost:3000/#/activate/MTE/ala82e-581a9c33e6f47dbc88c9770fa01df90d`
+
+## Reset Password
+
+  After entering the email, in terminal you'll receive something as follow:
+
+  ```shell
+  ---------- MESSAGE FOLLOWS ----------
+  Subject: Password reset on localhost:8000
+  From: testing@example.com
+  To: demo@demo.com
+  
+  You're receiving this email because you requested a password reset for your user account at localhost:8000.
+
+  Please go to the following page and choose a new password:
+  http://localhost:8000/password/reset/confirm/MTQ/ala947-e0435fd7deda326f2e2aebeee25003ac
+  ```
+  
+  Change password on `http://localhost:3000/#/password/reset/confirm/MTQ/ala947-e0435fd7deda326f2e2aebeee25003ac`
+
+## Reset Password Confirmation
+
+  After entering the new password, in terminal you'll receive something as follow:
+
+  ```shell
+  ---------- MESSAGE FOLLOWS ----------
+  Subject: localhost:8000 - Your password has been successfully changed!
+  From: testing@example.com
+  To: demo@demo.com
+  
+  Your password has been changed!
+
+  Thanks for using our site!
+  ```

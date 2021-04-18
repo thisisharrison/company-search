@@ -1,4 +1,4 @@
-# Compnay Search
+# Company Search
 
 ## Usage
 ### Install Dependencies

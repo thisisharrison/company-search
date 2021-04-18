@@ -87,6 +87,7 @@ export const registerUser = (data) => (dispatch) =>
   API.register(data)
     .then((res) => {
       dispatch(receieveUserSignIn());
+      return { state: "register_user" };
     })
     .catch((err) => dispatch(receiveAuthErrors(err.response.data)));
 

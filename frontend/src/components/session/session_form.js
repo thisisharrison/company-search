@@ -50,6 +50,8 @@ const SessionForm = ({
           history.push("/account/login");
         } else if (res.status === "login_success") {
           history.push("/companies");
+        } else if (res.state === "register_user") {
+          history.push("/account/login");
         }
       }
     });

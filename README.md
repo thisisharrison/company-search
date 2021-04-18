@@ -51,6 +51,35 @@
     ```python
     python -m smtpd -n -c DebuggingServer localhost:1025
     ```
+<hr>
+
+## Authentication
+
+  ### Backend 
+
+  In `settings.py`, I set the authorization type to `rest_framework_simplejwt`. The Auth Headers will have a `Bearer` token. I have a custom Token subclass in `views.py` in `accounts` to encode user's username and email in the tokens. I will use this in the frontend. 
+  
+  In the `urls.py` of the project, I have set `djoser.urls` to handle `auth` routes, which handles creating and activating a user, as well as reseting password and confirming new password. 
+
+  I also have `auth/jwt/create/` and `auth/jwt/refresh/` routes to handle login, and return my custom Token. 
+  
+  ### Frontend
+
+  In `index.js`, I have an event listener that checks for `jwtToken` (the access token passed by the auth api) in localStorage. If it exists, I decode the token, then check if the token has expired, and lastly give Redux store a preloaded state of the authenticated user. If it has expired, I remove the `jwtToken` from localStorage, reset Auth headers in axios, and pass in an empty object as the Redux preloaded state.
+
+  When user logins, I save the authenticated user into Redux store and localStorage with `access`, `refresh`, and `jwtToken` keys. I also update the axios headers to verify future API requests. This header matches `settings.py` using the `Bearer` prefix.
+
+  ```js
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  ```
+
+  When user logouts, I remove the keys in localStorage, and delete the `Authorization` header from axios. 
+
+  ### Frontend Routes
+
+  When user is authenticated and token has not expired, Redux store has a session slice with `isAuthenticated`. I pass this boolean value to `routes_util` to create `AuthRoutes` and `ProtectedRoutes`. If a user is logged in, user will be redirected when trying to access Auth Routes (login, signup). If a user is not authenticated, user will be redirected when trying to access Protected Routes (companies).
+
+<hr>
 
 ## Email Activation
 
@@ -103,3 +132,40 @@
 
   Thanks for using our site!
   ```
+<hr>
+
+## Favorites
+
+  ### Backend
+
+  In `Company` model, I have a `ManyToMany` field with `UserAccount` model.
+
+  To add, remove and filter favorite, user makes `POST` requests to function views in `companies`. The views check if `request.user.is_anonymous` and returns `401` if user is not authenticated. 
+
+  I add and remove `request.user` in add or remove favorite. And filter `favorites=request.user.id` to get current user's favorites. 
+
+  ### Frontend
+
+  In Redux store, there is a slice that saves users' search actions. When a user filter favorites, `state.search.favoriteFilter` will be true. 
+
+  In `company_index_container`, `mapStateToProps` will override `companies` from `selectAllCompanies` to `selectUserFavorite`. This selector function will use the `state.user.favorites` array of company IDs and map to the `state.entities.all` to get the favorite companies.
+
+  To get user's favorites, `search_container` will `fetchUserFavorites` on mount. And on `postFavorite` and `removeFavorite`, `userReducer` will update the `favorites` array in the Redux store.
+
+## Search
+
+  `fetchAllCompanies` takes in a query string. If the query string is not empty, it will add to the axios `GET` request.
+
+  ```js
+  axios.get(`/api/companies?search=${query}`);
+  ```
+
+  `fetchAllCompanies` is used for search and for showing all companies in general. Later on we can add page numbers for pagination and will not have to create a new function for it.
+
+  In the backend, `CompanyList` is a class based view that will check if `request.query_params` exists. If it does, we filter with: 
+
+  ```python
+  name__icontains=request.query_params["search"]
+  ```
+
+  Otherwise, we get all companies and return to the frontend.

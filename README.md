@@ -28,7 +28,7 @@
     CREATE DATABASE company_search;
     ```
     
-    Run migration and make changes to database. 
+    In backend directory, Run migration and make changes to database. 
 
     ```python
     python manage.py migrate
